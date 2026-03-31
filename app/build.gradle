@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    project.ext.chaquopyDisable = true
     namespace 'com.fongmi.android.tv'
 
     compileSdk {
