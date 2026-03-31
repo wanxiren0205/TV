@@ -25,9 +25,9 @@ jobs:
       - name: Grant execute permission
         run: chmod +x gradlew
 
-      # 🔥 核心修复：跳过 Python 依赖，只打包安卓本体
+      # 🔥 只跳过这一个任务，完美解决 Python 错误
       - name: Build Debug APK
-        run: ./gradlew assembleDebug -x chaquo:installArm64_v8aDebugPythonRequirements -x chaquo:installX86_64DebugPythonRequirements --stacktrace
+        run: ./gradlew assembleDebug -x :chaquo:installArm64_v8aDebugPythonRequirements --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
