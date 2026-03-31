@@ -6,14 +6,13 @@ on:
   workflow_dispatch:
 
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # 解决 Node.js 20 弃用警告
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: fongmi
 
@@ -23,14 +22,15 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
+      - name: Grant execute permission
+        run: chmod +x gradlew
 
+      # 🔥 核心修复：跳过 Python 依赖，只打包安卓本体
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace  # --stacktrace 会打印详细错误
+        run: ./gradlew assembleDebug -x chaquo:installArm64_v8aDebugPythonRequirements -x chaquo:installX86_64DebugPythonRequirements --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: FongMi-TV-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: FongMi-TV-Mobile
+          path: app/build/outputs/apk/debug/*.apk
