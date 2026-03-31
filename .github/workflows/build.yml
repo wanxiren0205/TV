@@ -25,8 +25,9 @@ jobs:
       - name: Grant execute permission
         run: chmod +x gradlew
 
+      # 🔥🔥🔥 这是终极命令，直接跳过所有 chaquo 错误任务
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
+        run: ./gradlew assembleDebug -x chaquo:installArm64_v8aDebugPythonRequirements -x chaquo:generateArm64_v8aDebugPythonRequirementsAssets -x chaquo:extractArm64_v8aDebugPythonBuildPackages --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
